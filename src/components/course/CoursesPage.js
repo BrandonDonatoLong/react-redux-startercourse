@@ -2,7 +2,8 @@
  * Created by Brandon on 7/20/2017.
  */
 import React, {PropTypes} from 'react';
-
+import {connect} from 'react-redux';
+import * as courseActions from '../../actions/courseActions';
 
 class CoursesPage extends React.Component {
     constructor (props, context){
@@ -23,18 +24,23 @@ class CoursesPage extends React.Component {
     }
 
     onClickSave(){
-        alert(`saving ${this.state.course.title}`);
+        this.props.dispatch(courseActions.createCourse(this.state.course));
+    }
+
+    courseRow(course, index){
+        return <div key={index}>{course.title}</div>;
     }
 
     render() {
         return (
             <div>
                 <h1>Courses</h1>
+                {this.props.courses.map(this.courseRow)}
+                <h2>Add Course</h2>
                 <input
                     type="text"
                     onChange={this.onTitleChange}
                     value={this.state.course.title} />
-
                 <input
                     type="submit"
                     value="Save"
@@ -44,4 +50,18 @@ class CoursesPage extends React.Component {
     }
 }
 
-export default CoursesPage;
+CoursesPage.propTypes = {
+    dispatch:PropTypes.func.isRequired,
+    courses: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+    return {
+        courses: state.courses
+    };
+}
+
+
+// connect returns a function and thus CoursesPage class/component gets called into the function that is returned by the
+// connect function that has some other functions passed to it. That is a mouthful!
+export default connect(mapStateToProps)(CoursesPage);
