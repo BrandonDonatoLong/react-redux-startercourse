@@ -24,7 +24,7 @@ class CoursesPage extends React.Component {
     }
 
     onClickSave(){
-        this.props.dispatch(courseActions.createCourse(this.state.course));
+        this.props.createCourse(this.state.course);
     }
 
     courseRow(course, index){
@@ -51,7 +51,7 @@ class CoursesPage extends React.Component {
 }
 
 CoursesPage.propTypes = {
-    dispatch:PropTypes.func.isRequired,
+    createCourse:PropTypes.func.isRequired,
     courses: PropTypes.array.isRequired
 };
 
@@ -61,7 +61,14 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
+function mapDispatchToProps(dispatch){
+    //mapping manually
+
+    return{
+        createCourse: (course) => dispatch(courseActions.createCourse(course))
+    };
+}
 
 // connect returns a function and thus CoursesPage class/component gets called into the function that is returned by the
 // connect function that has some other functions passed to it. That is a mouthful!
-export default connect(mapStateToProps)(CoursesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
