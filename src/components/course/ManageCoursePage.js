@@ -11,6 +11,7 @@ class ManageCoursePage extends React.Component {
 
     render() {
         return (
+            <h1>Manage Course</h1>
         );
     }
 }
